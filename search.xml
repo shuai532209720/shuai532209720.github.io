@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/02/10/hello-world/</url>
-    <content><![CDATA[<p>第一次建个人网站，今后会在这里分钟分享一些个人diy项目,以及分享一些技术文档。</p>
-<p><strong>祝我自己玩的开心</strong></p>
-]]></content>
-  </entry>
-  <entry>
     <title>制作 Deiban Rootfs</title>
     <url>/2021/02/16/debian-rootfs/</url>
     <content><![CDATA[<h1 id="制作debian-rootfs的方法"><a href="#制作debian-rootfs的方法" class="headerlink" title="制作debian rootfs的方法"></a>制作debian rootfs的方法</h1><h2 id="qemu-debootstrap"><a href="#qemu-debootstrap" class="headerlink" title="qemu-debootstrap"></a>qemu-debootstrap</h2><p>如我们知道，debootstrap用以通过源制作debian/ubuntu 的基础rootfs。通常来说其分为下载（–foreign）和安装配置（–second-stage）两个阶段。对于跨平台的第一阶段下载只需要通过–arch置顶平台下载对应deb包，但是对于包安装则需chroot后在编译机上面虚拟目标机的deboosttap 执行安装。</p>
@@ -54,5 +47,12 @@
         <tag>Debian</tag>
         <tag>Rootfs</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/02/10/hello-world/</url>
+    <content><![CDATA[<p>第一次建个人网站，今后会在这里分钟分享一些个人diy项目,以及分享一些技术文档。</p>
+<p><strong>祝我自己玩的开心</strong></p>
+]]></content>
   </entry>
 </search>
