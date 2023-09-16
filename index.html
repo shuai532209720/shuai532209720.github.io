@@ -199,6 +199,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/16/hexo-%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘帅">
+      <meta itemprop="description" content="一个终身学习的网站">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘帅的个人站">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/16/hexo-%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="post-title-link" itemprop="url">hexo 迁移步骤</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-16 17:01:58 / 修改时间：17:13:50" itemprop="dateCreated datePublished" datetime="2023-09-16T17:01:58+08:00">2023-09-16</time>
+            </span>
+
+          
+            <span id="/2023/09/16/hexo-%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="post-meta-item leancloud_visitors" data-flag-title="hexo 迁移步骤" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/09/16/hexo-%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/09/16/hexo-%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="hexo-迁移步骤"><a href="#hexo-迁移步骤" class="headerlink" title="hexo 迁移步骤"></a>hexo 迁移步骤</h1><p>当更换电脑后，之前的hexo配置，theme等需要迁移，在此记录下来，以备不时之需。</p>
+<h2 id="1、安装hexo环境"><a href="#1、安装hexo环境" class="headerlink" title="1、安装hexo环境"></a>1、安装hexo环境</h2><p>hexo通过npm安装，需要安装nodejs环境。</p>
+<h3 id="1、安装nodejs"><a href="#1、安装nodejs" class="headerlink" title="1、安装nodejs"></a>1、安装nodejs</h3><p>以centos安装为例。</p>
+<ul>
+<li>需要安装环境：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install gcc-c++ make</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>nodejs</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># setup_16.x可以选择安装版本，可以在nodejs官网查看支持的版本，修改16-&gt;安装版本</span><br><span class="line">curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash -</span><br><span class="line">sudo yum install -y nodejs </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>查看安装是否成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="2、copy文件"><a href="#2、copy文件" class="headerlink" title="2、copy文件"></a>2、copy文件</h2><p>需要拷贝原来blog的hexo的相关文件，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、_config.yml</span><br><span class="line">2、package.json(没用到)</span><br><span class="line">3、scaffolds/(没用到)</span><br><span class="line">4、source/</span><br><span class="line">5、theme/</span><br></pre></td></tr></table></figure>
+
+<p>将上面的文件&#x2F;文件夹复制到新的电脑上，放到一个新的文件夹下，比如blog。</p>
+<p>在copy到文件夹blog之前，需要对文件夹blog做初始化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd blog</span><br><span class="line"></span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3、安装所需模块"><a href="#3、安装所需模块" class="headerlink" title="3、安装所需模块"></a>3、安装所需模块</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">npm install hexo-generator-feed --save</span><br><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、部署"><a href="#4、部署" class="headerlink" title="4、部署"></a>4、部署</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/16/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -479,7 +586,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
