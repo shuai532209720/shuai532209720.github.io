@@ -224,7 +224,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-09-16 17:01:58 / 修改时间：17:13:50" itemprop="dateCreated datePublished" datetime="2023-09-16T17:01:58+08:00">2023-09-16</time>
+              <time title="创建时间：2023-09-16 17:01:58 / 修改时间：17:41:17" itemprop="dateCreated datePublished" datetime="2023-09-16T17:01:58+08:00">2023-09-16</time>
             </span>
 
           
@@ -288,6 +288,13 @@
 <h2 id="3、安装所需模块"><a href="#3、安装所需模块" class="headerlink" title="3、安装所需模块"></a>3、安装所需模块</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">npm install hexo-generator-feed --save</span><br><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
 
 <h2 id="4、部署"><a href="#4、部署" class="headerlink" title="4、部署"></a>4、部署</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-、注意事项"><a href="#5-、注意事项" class="headerlink" title="5 、注意事项"></a>5 、注意事项</h2><p>由于现在github加了鉴权的机制，在通过<code>hexo deploy</code>部署时，如果是通过http的方式，会报无权限问题。</p>
+<p><img src="/home/mi/disk2/303-blog/blog/source/images/permission_defined.png" alt="image-20230916173902188"></p>
+<p>只需把_config.yml的repo的链接改为ssh方式即可。</p>
+<p><img src="/home/mi/disk2/303-blog/blog/source/images/config_repolinks.png" alt="image-20230916174050264"></p>
+<p>当然，需要把宿主机的ssh的公钥id_rsa.pub上传到github即可。</p>
+
       
     </div>
 
