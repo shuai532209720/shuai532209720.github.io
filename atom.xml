@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>刘帅的个人站</title>
+  
+  <subtitle>天行健，君子以自强不息</subtitle>
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2021-02-16T08:49:52.000Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>刘帅</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://example.com/2023/09/16/hello-world/"/>
+    <id>http://example.com/2023/09/16/hello-world/</id>
+    <published>2023-09-16T08:58:14.346Z</published>
+    <updated>2021-02-16T08:49:52.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>第一次建个人网站，今后会在这里分钟分享一些个人diy项目,以及分享一些技术文档。</p><p><strong>祝我自己玩的开心</strong></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;第一次建个人网站，今后会在这里分钟分享一些个人diy项目,以及分享一些技术文档。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;祝我自己玩的开心&lt;/strong&gt;&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>制作 Deiban Rootfs</title>
+    <link href="http://example.com/2021/02/16/debian-rootfs/"/>
+    <id>http://example.com/2021/02/16/debian-rootfs/</id>
+    <published>2021-02-16T11:58:44.000Z</published>
+    <updated>2021-02-16T12:09:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="制作debian-rootfs的方法"><a href="#制作debian-rootfs的方法" class="headerlink" title="制作debian rootfs的方法"></a>制作debian rootfs的方法</h1><h2 id="qemu-debootstrap"><a href="#qemu-debootstrap" class="headerlink" title="qemu-debootstrap"></a>qemu-debootstrap</h2><p>如我们知道，debootstrap用以通过源制作debian&#x2F;ubuntu 的基础rootfs。通常来说其分为下载（–foreign）和安装配置（–second-stage）两个阶段。对于跨平台的第一阶段下载只需要通过–arch置顶平台下载对应deb包，但是对于包安装则需chroot后在编译机上面虚拟目标机的deboosttap 执行安装。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$which</span> qemu-debootstrap |xargs <span class="built_in">tail</span> -n 10</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! <span class="built_in">which</span> <span class="string">&quot;qemu-<span class="variable">$qemu_arch</span>-static&quot;</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">die <span class="string">&quot;Sorry, couldn&#x27;t find binary %s&quot;</span> <span class="string">&quot;qemu-<span class="variable">$qemu_arch</span>-static&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span> run debootstrap --<span class="built_in">arch</span> <span class="string">&quot;<span class="variable">$deb_arch</span>&quot;</span> --foreign <span class="variable">$opts</span> <span class="variable">$args</span></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$target</span>/usr/bin&quot;</span></span><br><span class="line"><span class="built_in">cp</span> $(<span class="built_in">which</span> <span class="string">&quot;qemu-<span class="variable">$qemu_arch</span>-static&quot;</span>) <span class="string">&quot;<span class="variable">$target</span>/usr/bin&quot;</span></span><br><span class="line">run <span class="built_in">chroot</span> <span class="string">&quot;<span class="variable">$target</span>&quot;</span> /debootstrap/debootstrap --second-stage</span><br></pre></td></tr></table></figure><p><strong>提示：</strong></p><p>如上代码片段所示qemu-debootstrap 功能：</p><ul><li><p>line.7 指示debootstrap 第一阶段通过指定–arch 确定平台下载包。</p></li><li><p>line.9 拷贝qemu-arrch64-static 下的虚拟软件到rootfs &#x2F;usr&#x2F;bin 目录用以chroot</p></li><li><p>line10指示chroot后debootstrap 第二阶段。arm64 debian jessie</p></li></ul><p>如上讨论，这里我们在x64 平台下载arm64（aarch64）平台rootfs并且尝试通过chroot实现初始用户、包安装重等操作。</p><h2 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">#用以下载安装rootfs</span></span><br><span class="line">sudo apt-get install debootstrap</span><br><span class="line"> <span class="comment">#包含应用qemu-debootstarp，</span></span><br><span class="line"> <span class="comment">#以及用以跨平台chroot的qemu-aarch64-static的应用软件</span></span><br><span class="line">sudo apt-get install qemu-user-static</span><br></pre></td></tr></table></figure><h2 id="下载归档keyring"><a href="#下载归档keyring" class="headerlink" title="下载归档keyring"></a>下载归档keyring</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install debian-archive-keyring</span><br><span class="line">sudo apt-key add /usr/share/keyrings/debian-archive-keyring.gpg</span><br></pre></td></tr></table></figure><h2 id="通过源下载rootfs"><a href="#通过源下载rootfs" class="headerlink" title="通过源下载rootfs"></a>通过源下载rootfs</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo qemu-debootstrap --<span class="built_in">arch</span>=arm64 </span><br><span class="line">--keyring /usr/share/keyrings/debian-archive-keyring.gpg </span><br><span class="line">--variant=buildd --exclude=debfoster </span><br><span class="line">unstable debian-arm64 http://ftp.debian.org/debian</span><br></pre></td></tr></table></figure><blockquote><p>提示：如上已经分析qemu-debootstrap 源码，其操作已经包含编译机（x64）的下载和chroot后arm64（arm64）的包安装配置阶段。</p></blockquote><p>deiban jessie 如上下载安装可能会因为包缺失提示下载失败，这里搜索寻找替换了老的软件源。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo qemu-debootstrap --<span class="built_in">arch</span>=arm64 </span><br><span class="line">--keyring /usr/share/keyrings/debian-archive-keyring.gpg </span><br><span class="line">--variant=buildd --exclude=debfoster </span><br><span class="line">--include=systemd-sysv jessie debian-jessie</span><br><span class="line"> https://mirrors.mediatemple.net/debian-archive/debianchroot</span><br></pre></td></tr></table></figure><h2 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h2><ul><li><p>chroot方式</p><p>chroot 是linux 用以切换rootfs的一个应用，跨平台操作通过需要切换的rootfs 路径下的&#x2F;usr&#x2F;bin&#x2F;qemu-aarch64-static 应用实现。<br>如上通过qemu-debootstrap 跨平台下载rootfs之后，可以通过chroot增加用户和安装软件。</p>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chroot</span> debian</span><br><span class="line"><span class="comment">#挂载proc文件系统，否则部分命令无法运行，</span></span><br><span class="line"><span class="comment">#比如htop，需要注意的是，在退出chroot时，要卸载proc文件系统</span></span><br><span class="line">mount -t proc proc /proc </span><br><span class="line"><span class="comment">#之后就可以在x64 平台 虚拟 arm64 roofs，并且可以虚拟运行其软件。</span></span><br><span class="line">adduser pi</span><br><span class="line">apt-get install vim</span><br></pre></td></tr></table></figure><ul><li><p>nfs方式</p><p>可以通过nfs的方式，挂在下载好的rootfs，然后安装需要的软件。</p></li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;制作debian-rootfs的方法&quot;&gt;&lt;a href=&quot;#制作debian-rootfs的方法&quot; class=&quot;headerlink&quot; title=&quot;制作debian rootfs的方法&quot;&gt;&lt;/a&gt;制作debian rootfs的方法&lt;/h1&gt;&lt;h2 id=&quot;q</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="http://example.com/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="http://example.com/tags/Linux/"/>
+    
+    <category term="Debian" scheme="http://example.com/tags/Debian/"/>
+    
+    <category term="Rootfs" scheme="http://example.com/tags/Rootfs/"/>
+    
+  </entry>
+  
+</feed>
